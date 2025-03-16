@@ -57,4 +57,22 @@ public class MessageService {
     }
 
 
+    /**
+     * 
+     * @param messageId
+     * @return The deleted message if it existed, otherwise null
+     */
+    public Message deleteMessageById(int messageId) {
+        // Check if the message exists and store for returning
+        Message message = messageDAO.getMessageById(messageId);
+        if (message == null) {
+            return null;
+        }
+
+        // Delete the message and return the object
+        messageDAO.deleteMessageById(messageId);
+        return message;
+    }
+
+
 }

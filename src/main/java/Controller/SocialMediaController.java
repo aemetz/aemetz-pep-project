@@ -43,7 +43,7 @@ public class SocialMediaController {
         app.post("messages", this::createMessageHandler);
         app.get("messages", this::getAllMessagesHandler);
         app.get("messages/{message_id}", this::getMessageById);
-        
+        app.delete("messages/{message_id}", this::deleteMessageById);
 
         return app;
     }
@@ -130,13 +130,12 @@ public class SocialMediaController {
 
 
     /**
-     * Get a message object with a specific message_id.
+     * Get a message object with a specific message_id. Empty response if message doesn't exist.
      * 
      * @param context
      * @throws JsonProcessingException
      */
     private void getMessageById(Context context) throws JsonProcessingException {
-
         ObjectMapper mapper = new ObjectMapper();
         String messageIdParam = context.pathParam("message_id");
         int messageId = Integer.parseInt(messageIdParam);
@@ -149,6 +148,29 @@ public class SocialMediaController {
             context.status(200);
         }
     }
+
+
+    /**
+     * Deletes a message given an ID. If message didn't exist, response is empty, status 200.
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void deleteMessageById(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        String messageIdParam = context.pathParam("message_id");
+        int messageId = Integer.parseInt(messageIdParam);
+
+        Message message = messageService.deleteMessageById(messageId);
+        if (message != null) {
+            context.json(mapper.writeValueAsString(message));
+        } else {
+            context.status(200);
+        }
+    }
+
+    
+
 
 
 }

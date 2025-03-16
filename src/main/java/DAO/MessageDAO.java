@@ -40,7 +40,7 @@ public class MessageDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        
+
         return null;
     }
 
@@ -105,6 +105,22 @@ public class MessageDAO {
         }
 
         return messages;
+    }
+
+
+
+
+    public void deleteMessageById(int messageId) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "DELETE FROM message WHERE message_id = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, messageId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
