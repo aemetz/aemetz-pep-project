@@ -38,7 +38,7 @@ public class SocialMediaController {
 
 
         // define Handlers
-        app.post("localhost:8080/register", this::createAccountHandler);
+        app.post("register", this::createAccountHandler);
         
 
         return app;

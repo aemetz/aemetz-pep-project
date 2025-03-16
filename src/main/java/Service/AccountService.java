@@ -34,16 +34,18 @@ public class AccountService {
             return null;
         }
 
+        // Check for valid username (not blank)
+        if (account.getUsername().length() == 0) {
+            return null;
+        }
 
-        // TO DO: Check that the account doesn't exist first
-        // - Create a method in the DAO layer to get an account by username (unique)
-        //       - This method returns the Account object, or null if it doesn't exist
-        // - Call that method here
-        // - If the result is null, we can create the object
-        // - Otherwise, we have return null and the AccountHandler will therefore throw a 400 error
+        // Check if the account w/ given username already exists.
+        // If we get an Account back, we return null which triggers the Controller to throw a 400.
+        if (accountDAO.getAccountByUsername(account.getUsername()) != null) {
+            return null;
+        }
 
-
-
+        // Checks have passed so we create the account.
         return accountDAO.insertAccount(account);
     }
 
