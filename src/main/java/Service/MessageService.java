@@ -48,4 +48,13 @@ public class MessageService {
     }
 
 
+    /**
+     * @param messageId
+     * @return The message if it exists.
+     */
+    public Message getMessageById(int messageId) {
+        return messageDAO.getMessageById(messageId);
+    }
+
+
 }

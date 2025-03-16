@@ -13,6 +13,39 @@ import Util.ConnectionUtil;
 
 public class MessageDAO {
 
+    /**
+     * 
+     * @param id the message_id of the message to retrieve
+     * @return the message if found, or null
+     */
+    public Message getMessageById(int id) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+
+            String sql = "SELECT * FROM message WHERE message_id = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Message message = new Message(
+                    id,
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted_epoch")
+                );
+                return message;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return null;
+    }
+
+
+
 
     /**
      * Persist a new message into the database.

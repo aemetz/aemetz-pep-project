@@ -42,6 +42,7 @@ public class SocialMediaController {
 
         app.post("messages", this::createMessageHandler);
         app.get("messages", this::getAllMessagesHandler);
+        app.get("messages/{message_id}", this::getMessageById);
         
 
         return app;
@@ -113,6 +114,7 @@ public class SocialMediaController {
     }
 
 
+
     /**
      * Respond with a JSON representation of a list containing all messages retrieved from the database
      * 
@@ -123,6 +125,29 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         List<Message> messages = messageService.getAllMessages();
         context.json(mapper.writeValueAsString(messages));
+    }
+
+
+
+    /**
+     * Get a message object with a specific message_id.
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void getMessageById(Context context) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        String messageIdParam = context.pathParam("message_id");
+        int messageId = Integer.parseInt(messageIdParam);
+
+        // If message doesn't exist, response will be empty (200)
+        Message message = messageService.getMessageById(messageId);
+        if (message != null) {
+            context.json(mapper.writeValueAsString(message));
+        } else {
+            context.status(200);
+        }
     }
 
 
