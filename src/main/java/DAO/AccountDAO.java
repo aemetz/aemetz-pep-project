@@ -12,7 +12,6 @@ import Util.ConnectionUtil;
 public class AccountDAO {
     
 
-    // Get an account from the Account table given an account_id
     /**
      * Get an account from the Account table given an account_id
      * 
@@ -28,7 +27,6 @@ public class AccountDAO {
             PreparedStatement ps = connection.prepareStatement(sql);
 
             ps.setString(1, username);
-            ps.executeUpdate();
 
             // If the account exists, return the account
             ResultSet rs = ps.executeQuery();
@@ -48,8 +46,44 @@ public class AccountDAO {
         // If no account with the given username exists, return null
         return null;
 
-
     }
+
+
+    /**
+     * Query the database for the given account. Return object if it exists, else null.
+     * 
+     * @param username
+     * @param password
+     * @return Account object with account_id if it exists, or null
+     */
+    public Account getAccountByUsernamePassword(String username, String password) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+
+            String sql = "SELECT * FROM account WHERE username = ? AND password = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Account account = new Account(
+                    rs.getInt(1),
+                    username,
+                    password
+                );
+                return account;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
 
 
     /**

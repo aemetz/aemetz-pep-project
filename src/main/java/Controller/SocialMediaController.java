@@ -36,6 +36,7 @@ public class SocialMediaController {
         Javalin app = Javalin.create();
 
         app.post("register", this::createAccountHandler);
+        app.post("login", this::loginHandler);
         
 
         return app;
@@ -43,6 +44,7 @@ public class SocialMediaController {
 
 
     /**
+     * Persist a new account.
      * 
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      * @throws JsonProcessingException
@@ -53,7 +55,7 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(context.body(), Account.class);
 
-        // Otherwise, add the account
+        // Add the account
         Account addedAccount = accountService.addAccount(account);
         if (addedAccount != null) {
             context.json(mapper.writeValueAsString(addedAccount));
@@ -63,5 +65,25 @@ public class SocialMediaController {
 
     }
 
+
+    /**
+     * Check that an account with the given username/password exists. 200, else 401.
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void loginHandler(Context context) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(context.body(), Account.class);
+
+        Account loginAccount = accountService.loginAccount(account);
+        if (loginAccount != null) {
+            context.json(mapper.writeValueAsString(loginAccount));
+        } else {
+            context.status(401);
+        }
+
+    }
 
 }

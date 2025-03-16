@@ -54,4 +54,20 @@ public class AccountService {
         return accountDAO.insertAccount(account);
     }
 
+
+
+
+    /**
+     * Uses the AccountDAO to check if the account credentials map to an existing account.
+     * 
+     * @param account Account object containing username and password to be checked
+     * @return the Account object with account_id if it exists, or null
+     */
+    public Account loginAccount(Account account) {
+        return accountDAO.getAccountByUsernamePassword(account.getUsername(), account.getPassword());
+    }
+
+
+
+
 }
