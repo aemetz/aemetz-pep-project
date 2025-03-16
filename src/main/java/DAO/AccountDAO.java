@@ -86,6 +86,38 @@ public class AccountDAO {
 
 
 
+
+    public Account getAccountById(int id) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try  {
+
+            String sql = "SELECT * FROM account WHERE account_id = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Account account = new Account(
+                    id,
+                    rs.getString("username"),
+                    rs.getString("password")
+                );
+                return account;
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
+    }
+
+
+
+
+
     /**
      * Insert an account into the Account table
      * The account_id is automatically generated, this method needs a username and password
@@ -118,13 +150,6 @@ public class AccountDAO {
 
         return null;
     }
-
-
-
-
-
-
-
 
 
 

@@ -37,6 +37,8 @@ public class SocialMediaController {
 
         app.post("register", this::createAccountHandler);
         app.post("login", this::loginHandler);
+
+        app.post("messages", this::createMessageHandler);
         
 
         return app;
@@ -83,7 +85,32 @@ public class SocialMediaController {
         } else {
             context.status(401);
         }
+    }
+
+
+
+    /**
+     * Create a new message. Status code of 200 if successful, otherwise 400.
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void createMessageHandler(Context context) throws JsonProcessingException {
+
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(context.body(), Message.class);
+
+        Message newMessage = messageService.createMessage(message);
+        if (newMessage != null) {
+            context.json(mapper.writeValueAsString(newMessage));
+        } else {
+            context.status(400);
+        }
 
     }
+
+
+
+
 
 }
