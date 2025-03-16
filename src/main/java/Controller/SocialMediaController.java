@@ -34,24 +34,19 @@ public class SocialMediaController {
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.get("example-endpoint", this::exampleHandler);
 
-
-        // define Handlers
         app.post("register", this::createAccountHandler);
         
 
         return app;
     }
 
-    /**
-     * This is an example handler for an example endpoint.
-     * @param context The Javalin Context object manages information about both the HTTP request and response.
-     */
-    private void exampleHandler(Context context) {
-        context.json("sample text");
-    }
 
+    /**
+     * 
+     * @param context The Javalin Context object manages information about both the HTTP request and response.
+     * @throws JsonProcessingException
+     */
     private void createAccountHandler(Context context) throws JsonProcessingException {
 
         // ObjectMapper will convert JSON from post request into Account object

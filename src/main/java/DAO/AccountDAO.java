@@ -13,6 +13,12 @@ public class AccountDAO {
     
 
     // Get an account from the Account table given an account_id
+    /**
+     * Get an account from the Account table given an account_id
+     * 
+     * @param username The username of the account to search for
+     * @return The account object if it exists, otherwise null
+     */
     public Account getAccountByUsername(String username) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -46,8 +52,13 @@ public class AccountDAO {
     }
 
 
-    // Insert an account into the Account table
-    // The account_id is automatically generated, this method needs a username and password
+    /**
+     * Insert an account into the Account table
+     * The account_id is automatically generated, this method needs a username and password
+     * 
+     * @param account The object of the account to be persisted
+     * @return The created account if succesful, otherwise null
+     */
     public Account insertAccount(Account account) {
         Connection connection = ConnectionUtil.getConnection();
 

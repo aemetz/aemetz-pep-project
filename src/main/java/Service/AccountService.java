@@ -24,9 +24,14 @@ public class AccountService {
     }
 
 
-    // Uses the AccountDAO to persist an account.
-    // Parameters: account (an Account object)
-    // Returns: the persisted account if the persistence is successful
+    /**
+     * Uses the AccountDAO to persist an account.
+     * Checks for valid username and password.
+     * Checks that the account doesn't already exist.
+     * 
+     * @param account The object of the account to be created
+     * @return the Account object created if successful, or null
+     */
     public Account addAccount(Account account) {
 
         // Check for validity of password (must be greater than 4 characters)
