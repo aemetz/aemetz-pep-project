@@ -5,9 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import Model.Account;
-import Service.AccountService;
 import Model.Message;
+import Service.AccountService;
 import Service.MessageService;
+
+import java.util.*;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -39,6 +41,7 @@ public class SocialMediaController {
         app.post("login", this::loginHandler);
 
         app.post("messages", this::createMessageHandler);
+        app.get("messages", this::getAllMessagesHandler);
         
 
         return app;
@@ -110,7 +113,17 @@ public class SocialMediaController {
     }
 
 
-
+    /**
+     * Respond with a JSON representation of a list containing all messages retrieved from the database
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void getAllMessagesHandler(Context context) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<Message> messages = messageService.getAllMessages();
+        context.json(mapper.writeValueAsString(messages));
+    }
 
 
 }

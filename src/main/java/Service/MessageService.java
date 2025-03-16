@@ -4,6 +4,8 @@ import Model.Message;
 import DAO.AccountDAO;
 import DAO.MessageDAO;
 
+import java.util.List;
+
 public class MessageService {
     private MessageDAO messageDAO;
     private AccountDAO accountDAO;
@@ -21,7 +23,6 @@ public class MessageService {
 
 
 
-
     public Message createMessage(Message message) {
 
         // Ensure message_text is not blank, and is not over 255 characters
@@ -36,6 +37,14 @@ public class MessageService {
         }
 
         return messageDAO.insertMessage(message);
+    }
+
+    /**
+     * 
+     * @return List of all messages retrieved by the DAO
+     */
+    public List<Message> getAllMessages() {
+        return messageDAO.getAllMessages();
     }
 
 
