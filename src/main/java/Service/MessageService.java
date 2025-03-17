@@ -15,14 +15,6 @@ public class MessageService {
         accountDAO = new AccountDAO();
     }
 
-    // Constructor for the service when an authorDAO is provided.
-    public MessageService(MessageDAO messageDAO){
-        this.messageDAO = messageDAO;
-        this.accountDAO = accountDAO;
-    }
-
-
-
     public Message createMessage(Message message) {
 
         // Ensure message_text is not blank, and is not over 255 characters
@@ -110,7 +102,4 @@ public class MessageService {
     public List<Message> getAllMessagesByAccountId(int accountId) {
         return messageDAO.getAllMessagesByAccountId(accountId);
     }
-
-
-
 }

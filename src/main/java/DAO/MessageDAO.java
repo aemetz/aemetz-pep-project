@@ -7,9 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-import org.h2.command.Prepared;
-
-import Model.Account;
 import Model.Message;
 import Util.ConnectionUtil;
 
