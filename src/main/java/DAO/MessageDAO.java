@@ -109,7 +109,10 @@ public class MessageDAO {
 
 
 
-
+    /**
+     * Delete a message given an ID
+     * @param messageId ID of the message to delete
+     */
     public void deleteMessageById(int messageId) {
         Connection connection = ConnectionUtil.getConnection();
 
@@ -118,6 +121,28 @@ public class MessageDAO {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, messageId);
             ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
+
+    /**
+     * Update the text of the message with the given ID
+     * @param messageId Id of the message to update
+     * @param messageText New text to update the message with
+     */
+    public void updateMessageById(int messageId, String messageText) {
+        Connection connection = ConnectionUtil.getConnection();
+
+        try {
+            String sql = "UPDATE message SET message_text = ? WHERE message_id = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, messageText);
+            ps.setInt(2, messageId);
+            ps.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

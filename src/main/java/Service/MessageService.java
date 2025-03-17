@@ -75,4 +75,38 @@ public class MessageService {
     }
 
 
+
+    /**
+     * 
+     * @param messageId the ID of the message
+     * @param messageText the new text to update the message with
+     * @return the updated message, or null
+     */
+    public Message updateMessageById(int messageId, String messageText) {
+        // Check if message text is valid
+        System.out.println("----------------------------------");
+        System.out.println("Message: " + messageText);
+        int messageLen = messageText.length();
+        if (messageLen <= 0 || messageLen > 255) {
+            return null;
+        }
+
+        // Check if the message exists
+        Message existingMessage = messageDAO.getMessageById(messageId);
+        if (existingMessage == null) {
+            return null;
+        }
+
+        // Update the existing message and return the new object
+        messageDAO.updateMessageById(messageId, messageText);
+        return new Message(
+            messageId,
+            existingMessage.getPosted_by(),
+            messageText,
+            existingMessage.getTime_posted_epoch()
+        );
+    }
+
+
+
 }

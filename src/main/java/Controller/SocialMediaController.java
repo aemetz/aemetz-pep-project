@@ -1,6 +1,7 @@
 package Controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -44,6 +45,7 @@ public class SocialMediaController {
         app.get("messages", this::getAllMessagesHandler);
         app.get("messages/{message_id}", this::getMessageById);
         app.delete("messages/{message_id}", this::deleteMessageById);
+        app.patch("messages/{message_id}", this::updateMessage);
 
         return app;
     }
@@ -170,6 +172,31 @@ public class SocialMediaController {
     }
 
     
+
+
+    /**
+     * Given an ID and text, update the message with the new text.
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void updateMessage(Context context) throws JsonProcessingException {
+        // Get message id
+        ObjectMapper mapper = new ObjectMapper();
+        String messageIdParam = context.pathParam("message_id");
+        int messageId = Integer.parseInt(messageIdParam);
+
+        // Get message text
+        JsonNode jsonNode = mapper.readTree(context.body());
+        String messageText = jsonNode.get("message_text").asText();
+
+        Message message = messageService.updateMessageById(messageId, messageText);
+        if (message != null) {
+            context.json(mapper.writeValueAsString(message));
+        } else {
+            context.status(400);
+        }
+    }
 
 
 
