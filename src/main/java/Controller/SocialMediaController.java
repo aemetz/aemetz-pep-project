@@ -46,6 +46,7 @@ public class SocialMediaController {
         app.get("messages/{message_id}", this::getMessageById);
         app.delete("messages/{message_id}", this::deleteMessageById);
         app.patch("messages/{message_id}", this::updateMessage);
+        app.get("accounts/{account_id}/messages", this::getAllMessagesForUserHandler);
 
         return app;
     }
@@ -182,11 +183,11 @@ public class SocialMediaController {
      */
     private void updateMessage(Context context) throws JsonProcessingException {
         // Get message id
-        ObjectMapper mapper = new ObjectMapper();
         String messageIdParam = context.pathParam("message_id");
         int messageId = Integer.parseInt(messageIdParam);
 
         // Get message text
+        ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = mapper.readTree(context.body());
         String messageText = jsonNode.get("message_text").asText();
 
@@ -196,6 +197,24 @@ public class SocialMediaController {
         } else {
             context.status(400);
         }
+    }
+
+
+
+    /**
+     * Retrieve all messages posted by the account with the given account ID
+     * 
+     * @param context
+     * @throws JsonProcessingException
+     */
+    private void getAllMessagesForUserHandler(Context context) throws JsonProcessingException {
+        // Get Account ID
+        String accountIdParam = context.pathParam("account_id");
+        int accountId = Integer.parseInt(accountIdParam);
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<Message> messages = messageService.getAllMessagesByAccountId(accountId);
+        context.json(mapper.writeValueAsString(messages));
     }
 
 

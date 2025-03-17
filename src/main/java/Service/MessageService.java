@@ -84,8 +84,6 @@ public class MessageService {
      */
     public Message updateMessageById(int messageId, String messageText) {
         // Check if message text is valid
-        System.out.println("----------------------------------");
-        System.out.println("Message: " + messageText);
         int messageLen = messageText.length();
         if (messageLen <= 0 || messageLen > 255) {
             return null;
@@ -105,6 +103,12 @@ public class MessageService {
             messageText,
             existingMessage.getTime_posted_epoch()
         );
+    }
+
+
+
+    public List<Message> getAllMessagesByAccountId(int accountId) {
+        return messageDAO.getAllMessagesByAccountId(accountId);
     }
 
 

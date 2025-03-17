@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+import org.h2.command.Prepared;
+
 import Model.Account;
 import Model.Message;
 import Util.ConnectionUtil;
@@ -14,7 +16,6 @@ import Util.ConnectionUtil;
 public class MessageDAO {
 
     /**
-     * 
      * @param id the message_id of the message to retrieve
      * @return the message if found, or null
      */
@@ -80,6 +81,9 @@ public class MessageDAO {
     }
 
 
+    /**
+     * @return List of all messages
+     */
     public List<Message> getAllMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messages = new ArrayList<Message>();
@@ -146,6 +150,40 @@ public class MessageDAO {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+
+    /**
+     * @param accountId The ID of the account for which we are retrieving messages
+     * @return A list of Message objects associated with the account
+     */
+    public List<Message> getAllMessagesByAccountId(int accountId) {
+        Connection connection = ConnectionUtil.getConnection();
+        List<Message> messages = new ArrayList<Message>();
+
+        try {
+
+            String sql = "SELECT * FROM message WHERE posted_by = ?;";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, accountId);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Message message = new Message(
+                    rs.getInt("message_id"),
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted_epoch")
+                );
+                messages.add(message);
+            }
+
+            return messages;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 
 
